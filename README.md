@@ -1,6 +1,6 @@
 # vm-cloud-config
 
-Procedure to configure a vm-cloud on a server:
+Procedure to configure a vm-cloud on a server with zsh/bash:
 
 - creating ssh-key pair
 - deactivating password login
@@ -27,66 +27,83 @@ Procedure to configure a vm-cloud on a server:
 
 </br>
 
-## 2. First login on v-server
+## 2. First login on V-Server
 
-To login on server use username, ip and password:
+#### login with ssh command
 
-ssh username@ip
+    ssh <username>@<ip>
 
-Confirm the following question with "yes" to use the new fingerprint and enter server password:
-"Are you sure you want to continue connecting (yes/no/[fingerprint])? yes"
+#### Confirm the question with "yes" to use the new fingerprint and enter server password
+    Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 
-Output:
-"Welcome to Ubuntu 22.04.4 LTS (GNU/Linux 5.15.0-107-generic x86_64) ..."
+#### Output on successful login 👍🏻
+    Welcome to Ubuntu 22.04.4 LTS (GNU/Linux 5.15.0-107-generic x86_64) ...
 
-# 3. Add the public key to the VM
+</br>
 
-To copy the public key to the VM us the programm ssh-copy-id in local terminal:
+## 3. Add the public key to the VM
 
-ssh-copy-id -i ~/.ssh/vm_da_ed25519.pub username@ip
+> [!IMPORTANT]
+To copy the public key to the vm use the programm `ssh-copy-id` on local terminal:
 
-Output:
-"Number of key(s) added: 1
+    ssh-copy-id -i ~/.ssh/id_ed25519.pub username@ip
 
+#### Output on successfully adding the public key on vm 👍🏻
+```
+Number of key(s) added: 1
 Now try logging into the machine, with: "ssh 'username@ip'"
-and check to make sure that only the key(s) you wanted were added."
+and check to make sure that only the key(s) you wanted were added.
+```
 
-### try to login with ssh key without password
+#### try to login with ssh key without password
 
-ssh -i ~/.ssh/vm_da_ed25519 username@ip
+    ssh -i ~/.ssh/id_ed25519 <username>@<ip>
 
-Output:
-"Welcome to Ubuntu 22.04.4 LTS (GNU/Linux 5.15.0-107-generic x86_64) ..."
+#### check storage path of key on server
 
-### check storage path of key on server
+    ls -al ~/.ssh
 
-ls -al ~/.ssh
+#### show content of file "authorized_keys"
 
-### show content of file "authorized_keys
+> [!NOTE]
+> The public key should stored in this file
 
-cat ~/.ssh/authorized_keys
+    cat ~/.ssh/authorized_keys
 
-# 4. Disable password-login
+</br>
 
-sudo nano /etc/ssh/sshd_config
+## 4. Disable password-login
 
-### Remove the hastag before "PasswordAuthentication" and set the value to "no":
+> [!IMPORTANT]
+> Disable the password-login on V-Server, since it can be unsafe. The SSH-key pair is a safe authorization method.
+> Using of `sudo` to edit the `sshd-config` with nano 
 
-"...
+    sudo nano /etc/ssh/sshd_config
+
+#### Remove the hastag before "PasswordAuthentication" and set the value to "no"
+
+```
+...
 PasswordAuthentication no
-..."
+...
+```
 
-### restart ssh.service
+#### restart ssh.service after changes are done
 
-sudo systemctl restart ssh.service
+    sudo systemctl restart ssh.service
 
-### check if config on server works
+#### check if config on server works
 
-first check:
-ssh -i ~/.ssh/vm_da_ed25519 username@ip
+first check (login works):
 
-double check:
-ssh -o PubkeyAuthentication=no username@ip
+    ssh -i ~/.ssh/vm_da_ed25519 username@ip
+
+double check (login denied):
+
+    ssh -o PubkeyAuthentication=no username@ip
 
 Expected output:
-... "Permission denied (publickey)."
+> Permission denied (publickey).
+
+</br>
+
