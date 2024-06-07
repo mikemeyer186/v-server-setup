@@ -27,7 +27,7 @@ Procedure to configure a vm-cloud on a server with zsh/bash:
 
 </br>
 
-## 2. First login on V-Server
+## 2. First login on V-Server from local machine
 
 #### login with ssh command
 
@@ -41,7 +41,7 @@ Procedure to configure a vm-cloud on a server with zsh/bash:
 
 </br>
 
-## 3. Add the public key to the VM
+## 3. Add the public key to the VM from local maschine
 
 > [!IMPORTANT]
 To copy the public key to the vm use the programm `ssh-copy-id` on local terminal:
@@ -63,7 +63,7 @@ and check to make sure that only the key(s) you wanted were added.
 
     ls -al ~/.ssh
 
-#### show content of file "authorized_keys"
+#### show content of file `authorized_keys`
 
 > [!NOTE]
 > The public key should stored in this file
@@ -72,7 +72,7 @@ and check to make sure that only the key(s) you wanted were added.
 
 </br>
 
-## 4. Disable password-login
+## 4. Disable password-login on server
 
 > [!IMPORTANT]
 > Disable the password-login on V-Server, since it can be unsafe. The SSH-key pair is a safe authorization method.
@@ -80,7 +80,7 @@ and check to make sure that only the key(s) you wanted were added.
 
     sudo nano /etc/ssh/sshd_config
 
-#### Remove the hastag before "PasswordAuthentication" and set the value to "no"
+#### Remove the hastag before `PasswordAuthentication` and set the value to `no`
 
 ```
 ...
@@ -107,4 +107,19 @@ Expected output, if everything works well:
     Permission denied (publickey).
 
 </br>
+
+## 4. Installing of nginx on server
+
+#### first update the packetmanager `apt` and then install `nginx`
+
+    sudo apt update
+    sudo apt install nginx -y
+
+#### check status of `nginx.service`
+
+    systemctl status nginx.service     
+
+#### check if nginx webserver is active by connecting to ip with webbrowser
+
+![nginx](https://github.com/mikemeyer186/vm-cloud-config/assets/112903209/d7be6337-9e82-4a38-9eec-379986804bca)
 
