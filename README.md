@@ -1,26 +1,35 @@
 # vm-cloud-config
 
-Configuration of V-Server
+Procedure to configure a vm-cloud on a server:
 
-# 1. Create SSH-Key pair
+- creating ssh-key pair
+- deactivating password login
+- login with a SSH-key only
+  
+</br>
 
-The ED25519 key pair is a modern alternative to RSA keys
+## 1. Create SSH-key pair on local machine
 
-### create key
+> [!NOTE]
+> The ED25519 key pair is a modern alternative to RSA keys and should be used. 
 
-ssh-keygen -t ed25519
+#### create key
 
-### define path to store the key
+    ssh-keygen -t ed25519
 
-/Users/mike/.ssh/vm_da_ed25519
+#### define path to store the key
 
-### check if key pair is stored in defined path
+    ~/.ssh/id_ed25519
 
-ls ~/.ssh
+#### check if key pair is stored in defined path
 
-# 2. First login on v-server
+    ls ~/.ssh
 
-To login on server use username and ip:
+</br>
+
+## 2. First login on v-server
+
+To login on server use username, ip and password:
 
 ssh username@ip
 
