@@ -96,14 +96,15 @@ PasswordAuthentication no
 
 first check (login works):
 
-    ssh -i ~/.ssh/vm_da_ed25519 username@ip
+    ssh -i ~/.ssh/id_ed25519 <username>@<ip>
 
-double check (login denied):
+double check (permission denied):
 
-    ssh -o PubkeyAuthentication=no username@ip
+    ssh -o PubkeyAuthentication=no <username>@<ip>
 
-Expected output:
-> Permission denied (publickey).
+Expected output, if everything works well:
+
+    Permission denied (publickey).
 
 </br>
 
