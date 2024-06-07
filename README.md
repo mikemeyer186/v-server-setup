@@ -5,6 +5,7 @@ Procedure to configure a vm-cloud on a server with zsh/bash:
 - creating ssh-key pair
 - deactivating password login
 - login with a SSH-key only
+- installing nginx
   
 </br>
 
@@ -122,4 +123,6 @@ Expected output, if everything works well:
 #### check if nginx webserver is active by connecting to ip with webbrowser
 
 ![nginx](https://github.com/mikemeyer186/vm-cloud-config/assets/112903209/d7be6337-9e82-4a38-9eec-379986804bca)
+
+</br>
 
