@@ -14,15 +14,15 @@ Procedure to configure a vm-cloud on a server with zsh/bash:
 > [!NOTE]
 > The ED25519 key pair is a modern alternative to RSA keys and should be used. 
 
-#### create key
+#### Create key
 
     ssh-keygen -t ed25519
 
-#### define path to store the key
+#### Define path to store the key
 
     ~/.ssh/id_ed25519
 
-#### check if key pair is stored in defined path
+#### Check if key pair is stored in defined path
 
     ls ~/.ssh
 
@@ -30,7 +30,7 @@ Procedure to configure a vm-cloud on a server with zsh/bash:
 
 ## 2. First login on V-Server from local machine
 
-#### login with ssh command
+#### Login with ssh command
 
     ssh <username>@<ip>
 
@@ -56,15 +56,15 @@ Now try logging into the machine, with: "ssh 'username@ip'"
 and check to make sure that only the key(s) you wanted were added.
 ```
 
-#### try to login with ssh key without password
+#### Try to login with ssh key without password
 
     ssh -i ~/.ssh/id_ed25519 <username>@<ip>
 
-#### check storage path of key on server
+#### Check storage path of key on server
 
     ls -al ~/.ssh
 
-#### show content of file `authorized_keys`
+#### Show content of file `authorized_keys`
 
 > [!NOTE]
 > The public key should stored in this file
@@ -89,17 +89,17 @@ PasswordAuthentication no
 ...
 ```
 
-#### restart ssh.service after changes are done
+#### Restart ssh.service after changes are done
 
     sudo systemctl restart ssh.service
 
-#### check if config on server works
+#### Check if config on server works
 
-first check (login works):
+First check (login works ✅):
 
     ssh -i ~/.ssh/id_ed25519 <username>@<ip>
 
-double check (permission denied):
+Double check (permission denied ❌):
 
     ssh -o PubkeyAuthentication=no <username>@<ip>
 
@@ -111,16 +111,16 @@ Expected output, if everything works well:
 
 ## 4. Installing of nginx on server
 
-#### first update the packetmanager `apt` and then install `nginx`
+#### First update the packetmanager `apt` and then install `nginx`
 
     sudo apt update
     sudo apt install nginx -y
 
-#### check status of `nginx.service`
+#### Check status of `nginx.service`
 
     systemctl status nginx.service     
 
-#### check if nginx webserver is active by connecting to ip with webbrowser
+#### Check if nginx webserver is active by connecting to ip with webbrowser
 
 ![nginx](https://github.com/mikemeyer186/vm-cloud-config/assets/112903209/d7be6337-9e82-4a38-9eec-379986804bca)
 
