@@ -1,6 +1,6 @@
-# v-server-setup
+# V-Server setup
 
-Procedure to configure a vm-cloud on a server with zsh/bash:
+Procedure to configure a VM-cloud on a server with zsh:
 
 - creating ssh-key pair
 - deactivating password login
@@ -12,83 +12,100 @@ Procedure to configure a vm-cloud on a server with zsh/bash:
   
 </br>
 
-## 1. Create SSH-key pair on local machine
+## 1. Creating SSH-key pair on local machine
 
 > [!NOTE]
-> The ED25519 key pair is a modern alternative to RSA keys and should be used. 
-
-### Create key
-
-    ssh-keygen -t ed25519
-
-### Define path to store the key
-
-    ~/.ssh/id_ed25519
-
-### Check if key pair is stored in defined path
-
-    ls ~/.ssh
+> The ED25519 key pair is a modern alternative to RSA keys and should be used.
 
 </br>
 
-## 2. First login on V-Server from local machine
+Creating a key pair with `ssh-keygen` command and defining the path in `~/.ssh/id_ed25519`:
 
-### Login with ssh command
+```
+ssh-keygen -t ed25519
+```
 
-    ssh <username>@<ip>
+Checking, if key pair is stored correctly in defined path:
 
-### Confirm the question with "yes" to use the new fingerprint and enter server password
-    Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-
-### Output on successful login 👍🏻
-    Welcome to Ubuntu 22.04.4 LTS (GNU/Linux 5.15.0-107-generic x86_64) ...
+```
+ls ~/.ssh
+```
 
 </br>
 
-## 3. Add the public key to the VM from local maschine
+## 2. First login on v-server from local machine
+
+Login with `ssh` command followed by username and host ip:
+
+```
+ssh <username>@<ip>
+```
+
+Confirmation to use the new fingerprint and enter server password:
+
+```
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+```
+
+</br>
+
+## 3. Adding the public key to the VM from local maschine
 
 > [!IMPORTANT]
-> To copy the public key to the vm use the programm `ssh-copy-id` on local terminal:
+> Using the programm `ssh-copy-id` on local terminal to copy the public key to the vm:
 
-    ssh-copy-id -i ~/.ssh/id_ed25519.pub username@ip
+```
+ssh-copy-id -i ~/.ssh/id_ed25519.pub <username>@<ip>
+```
 
-### Output on successfully adding the public key on vm 👍🏻
+Output on successfully adding the public key on vm 👍🏻:
 ```
 Number of key(s) added: 1
 Now try logging into the machine, with: "ssh 'username@ip'"
 and check to make sure that only the key(s) you wanted were added.
 ```
 
-### Try to login with ssh key without password
+Login by using the SSH-key:
 
-    ssh -i ~/.ssh/id_ed25519 <username>@<ip>
+```
+ssh -i ~/.ssh/id_ed25519 <username>@<ip>
+```
 
-### Check storage path of key on server
 
-    ls -al ~/.ssh
+Checking path of key on server. In the directory `~/.ssh/` the file `authorized_keys` is stored:
 
-### Show content of file `authorized_keys`
+```
+ls -al ~/.ssh
+```
+
+Checking content of file `authorized_keys`:
 
 > [!NOTE]
-> The public key must be stored in this file
+> The public key from client must be stored in this file.
 
-    cat ~/.ssh/authorized_keys
+```
+cat ~/.ssh/authorized_keys
+```
 
 </br>
 
-## 4. Disable password-login on server
+## 4. Deactivating password-login on server
 
 > [!IMPORTANT]
-> Disable the password-login on V-Server, since it can be unsafe. The SSH-key pair is a safe authorization method.
+> Password-login on a server can be unsafe. The SSH-key pair is a safe authorization method.
 
 > [!CAUTION]
-> Before deactivating password login, make sure that the login on server works well with password
+> Before deactivating password login, it has to be ensured that the login on server works well with password!
 
-### Edit the `sshd-config` with nano 
+</br>
 
-    sudo nano /etc/ssh/sshd_config
+Editing the `sshd-config` with nano:
 
-### Remove the hastag before `PasswordAuthentication` and set the value to `no`
+```
+sudo nano /etc/ssh/sshd_config
+```
+
+Removing of the hastag before `PasswordAuthentication` and setting value to `no`
 
 ```
 ...
@@ -96,40 +113,54 @@ PasswordAuthentication no
 ...
 ```
 
-### Restart ssh.service after changes are done
+Restarting `ssh.service` after changes are done:
 
-    sudo systemctl restart ssh.service
+```
+sudo systemctl restart ssh.service
+```
 
-### Check if config on server works
+### Checking, if config on server works well
 
 First check (login works ✅):
 
-    ssh -i ~/.ssh/id_ed25519 <username>@<ip>
+```
+ssh -i ~/.ssh/id_ed25519 <username>@<ip>
+```
 
-Double check (permission denied ❌):
+Double check (permission should be denied ❌):
 
-    ssh -o PubkeyAuthentication=no <username>@<ip>
+```
+ssh -o PubkeyAuthentication=no <username>@<ip>
+```
 
-Expected output, if everything works well 👍🏻:
+Expected output, if the password authentication is deactiveated correctly 👍🏻:
 
-    Permission denied (publickey).
+```
+Permission denied (publickey).
+```
 
 </br>
 
 ## 4. Installing of nginx on server
 
-### First update the packetmanager `apt` and then install `nginx`
+Updating the package manager `apt` and then install `nginx`:
 
-    sudo apt update
-    sudo apt install nginx -y
+```
+sudo apt update
+sudo apt install nginx -y
+```
 
-### Check status of `nginx.service`
+Checking status of `nginx.service`:
 
-    systemctl status nginx.service     
+```
+systemctl status nginx.service     
+```
 
-### Check if nginx webserver is active by connecting to ip with webbrowser
+Checking, if nginx webserver is active by connecting to ip with webbrowser:
 
-    http://<ip-adress>
+```
+http://<ip-adress>
+```
 
 ![nginx](https://github.com/mikemeyer186/vm-cloud-config/assets/112903209/d7be6337-9e82-4a38-9eec-379986804bca)
 
@@ -137,35 +168,39 @@ Expected output, if everything works well 👍🏻:
 
 ## 5. Installing alternative html content on webserver
 
-### Check the default html content in `index.nginx-debian.html`
+Checking the default html content in `index.nginx-debian.html`:
 
-    cat /var/www/html/index.nginx-debian.html
+```
+cat /var/www/html/index.nginx-debian.html
+```
 
-### Create a directory with the command `mkdir` in `/var/www/`
+Creating a directory with the command `mkdir` in `/var/www/`:
 
-    sudo mkdir /var/www/alternatives
+```
+sudo mkdir /var/www/alternatives
+```
 
-### Create a html file in this directory
+Creating a html file in this directory:
 
-    sudo touch /var/www/alternatives/alternate-index.html
+```
+sudo touch /var/www/alternatives/alternate-index.html
+```
 
-### Check if the new html file is created correctly
+Checking, if the new html file is created correctly:
 
-    ls /var/www/alternatives
+```
+ls /var/www/alternatives
+```
 
- Expected output, if everything works well 👍🏻:
+Configuring of the nginx settings:
 
-    alternate-index.html
-
-### Configure the nginx settings
-
-1. Create the file:
+1. Creating the file `alternatives` in following directive:
 
 ```
 sudo nano /etc/nginx/sites-enabled/alternatives
 ```
 
-2. Paste the follwing code in the file:
+2. Adding the follwing code in this file:
 
 ```nginx
 server { 
@@ -182,9 +217,11 @@ server {
 
 ```
 
-### Create the alternative html file
+Editing the alternative html file:
 
-    sudo nano /var/www/alternatives/alternate-index.html
+```
+sudo nano /var/www/alternatives/alternate-index.html
+```
 
 Example html:
 
@@ -207,56 +244,75 @@ Example html:
 </html>
 ```
 
-### Testing of configuration (default `nginx.conf`)
+Testing of configuration (default `nginx.conf`):
 
-    sudo nginx -t
+```
+sudo nginx -t
+```
 
+Expected output, if configuaration works well 👍🏻:
 
-### Restart nginx and check if everything is running
+```
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
+
+Restarting nginx and check if everything is running:
 
 ```
 sudo service nginx restart
 systemctl status nginx.service
 ```
 
-### Check if the webserver can be connected with webbrowser
+Checking if the webserver can be connected with webbrowser:
 
-    http://<ip-adress>:8081
+```
+http://<ip-adress>:8081
+```
 
 > [!NOTE]
-> Trying to connect to a non existing page should show 404 error (default nginx)
+> Trying to connect to a non existing page should show 404 error (default nginx).
 
 </br>
 
 ## 6. Creating aliases on local machine for easier login on server
 
-### Create an new alias
+Creating a new alias:
 
-    alias da_connect="ssh -i ~/.ssh/id_ed25519 <username>@<ip>"
+```
+alias da_connect="ssh -i ~/.ssh/id_ed25519 <username>@<ip>"
+```
 
-### Login with alias
+Login with alias:
 
-    da_connect
+```
+da_connect
+```
 
 > [!TIP]
-> To search for created aliases use `alias | grep <keyword>`
+> Searching of created aliases with `alias | grep <keyword>`.
 
 > [!IMPORTANT]
-> To make the alias avilable for future sessions, store it in `.zshrc`
+> To make the alias avilable for future sessions, they have to be stored in `.zshrc`.
 
 </br>
 
-## 7. Creating identity keys on local machine for easier login on server
+## 7. Creating identities on local machine for easier login on server
 
-### Create config file, if it doesn't exists
+Creating config file, if it doesn't exist:
 
-    touch ~/.ssh/config
+```
+touch ~/.ssh/config
+```
 
-### Edit the config file and add the identity key
+Editing the config file and add the identity:
 
-    nano ~/.ssh/config 
+```
+nano ~/.ssh/config 
+```
 
-Paste the following config (replace the right path to ssh key):
+Adding the following configuration (correct path to ssh key):
+
 ```
 Host <ip-adress>
   User <username>
@@ -264,40 +320,79 @@ Host <ip-adress>
   IdentityFile ~/.ssh/id_ed25519
 ```
 
-### Login with identity key
+Login with identity:
 
-    ssh <hostname>
+```
+ssh <hostname>
+```
 
 > [!TIP]
-> Aliases and identities can be combined
+> Aliases and identities can be combined.
 
 </br>
 
 ## 8. Setup of Git and GitHub on server
 
-### Create a SSH-key pair on server
+Creating a SSH-key pair on server:
 
-    ssh-keygen -t ed25519
+```
+ssh-keygen -t ed25519
+```
 
-### Copy public key from created file
+Copying the public key from created file for GitHub:
 
-    cat ~/.ssh/git/id_ed25519.pub
+```
+cat ~/.ssh/git/id_ed25519.pub
+```
 
 > [!IMPORTANT]
-> Create a new SSH key entry in github account settings and paste the public key
+> New SSH key entry in GitHub account settings with created public key from server is needed!
 
-### Configure github username and email on server
+Configuration of GitHub username and email on server (same as on GitHub):
 
-    git config --global user.name "<username>"
-    git config --global user.email "<email address>"
+```
+git config --global user.name "<username>"
+git config --global user.email "<email>"
+```
 
-### Check if everything is correct in config
+Check if everything is correct in config:
 
-    git config --list
+```
+git config --list
+```
 
-### Clone this repository from GitHub
+Creating ssh config file, if it doesn't exists:
 
-    git clone git@github.com:mikemeyer186/vm-cloud-config.git
+```
+touch ~/.ssh/config
+```
+
+Adding the following identity to the ssh config file (right path to ssh key):
+
+```
+Host github.com
+  User git
+  PreferredAuthentications publickey
+  IdentityFile ~/.ssh/git/id_ed25519
+```
+
+Testing, if connection to GitHub server works well:
+
+```
+ssh -T git@github.com
+```
+
+Expected output, if connection works 👍🏻:
+
+```
+Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+Cloning of this repository from GitHub:
+
+```
+git clone git@github.com:mikemeyer186/vm-cloud-config.git
+```
 
 Output, if everything works 👍🏻:
 
