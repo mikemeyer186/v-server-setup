@@ -244,6 +244,13 @@ Example html:
 </html>
 ```
 
+</br>
+
+> [!NOTE]
+> See my alternative `index.html` in my [repository](https://github.com/mikemeyer186/vm-cloud-config/blob/main/index.html).
+
+</br>
+
 Testing of configuration (default `nginx.conf`):
 
 ```
@@ -269,6 +276,8 @@ Checking if the webserver can be connected with webbrowser:
 ```
 http://<ip-adress>:8081
 ```
+
+![alternative-index](https://github.com/mikemeyer186/vm-cloud-config/assets/112903209/c22bd09d-a7f6-48a8-b184-c68cc2cd74f5)
 
 > [!NOTE]
 > Trying to connect to a non existing page should show 404 error (default nginx).
