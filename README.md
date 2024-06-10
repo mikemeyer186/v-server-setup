@@ -1,6 +1,6 @@
 # V-Server setup
 
-Procedure to configure a VM-cloud on a server with zsh:
+Procedure to configure a v-server with zsh:
 
 - creating ssh-key pair
 - deactivating password login
