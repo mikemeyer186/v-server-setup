@@ -214,7 +214,22 @@ server {
                 try_files $uri $uri/ =404;    # If files could not be found in root directory, 404 will be returned
         }
 }
+```
 
+3. Replacing the default nginx configuration in following directive:
+
+```
+sudo nano /etc/nginx/sites-enabled/default
+```
+
+Editing dafault settings:
+
+```nginx
+#root /var/www/html;                                   # hashtag comment
+root /var/www/alternatives;                            # alternative root directive
+
+#index index.html index.htm index.nginx-debian.html;   # hashtag comment
+index alternate-index.html;                            # alternative index.html
 ```
 
 Editing the alternative html file:
@@ -274,6 +289,7 @@ systemctl status nginx.service
 Checking if the webserver can be connected with webbrowser:
 
 ```
+http://<ip-adress>
 http://<ip-adress>:8081
 ```
 
