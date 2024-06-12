@@ -161,8 +161,7 @@ Checking, if nginx webserver is active by connecting to ip with webbrowser:
 ```
 http://<ip-adress>
 ```
-
-![nginx](https://github.com/mikemeyer186/vm-cloud-config/assets/112903209/d7be6337-9e82-4a38-9eec-379986804bca)
+![Bildschirmfoto 2024-06-12 um 18 46 44](https://github.com/mikemeyer186/v-server-setup/assets/112903209/c94efb49-c7d4-4793-9d05-cfbdd9f40d57)
 
 </br>
 
@@ -262,11 +261,11 @@ Example html:
 </br>
 
 > [!NOTE]
-> See my alternative `index.html` in my [repository](https://github.com/mikemeyer186/vm-cloud-config/blob/main/index.html).
+> See my alternative `index.html` in my [repository](https://github.com/mikemeyer186/v-server-setup/blob/main/index.html).
 
 </br>
 
-Testing of configuration (default `nginx.conf`):
+Testing of configuration (default in `/etc/nginx/nginx.conf`):
 
 ```
 sudo nginx -t
@@ -292,11 +291,13 @@ Checking if the webserver can be connected with webbrowser:
 http://<ip-adress>
 http://<ip-adress>:8081
 ```
-
-![alternative-index](https://github.com/mikemeyer186/vm-cloud-config/assets/112903209/c22bd09d-a7f6-48a8-b184-c68cc2cd74f5)
+![Bildschirmfoto 2024-06-12 um 18 44 08](https://github.com/mikemeyer186/v-server-setup/assets/112903209/943365b4-26ab-46f0-94ae-363563096ecc)
 
 > [!NOTE]
 > Trying to connect to a non existing page should show 404 error (default nginx).
+
+> [!WARNING]
+> Port 8081 should be deactivated for live operation. Deactivating of default config and editing of alternative config is recommended. Only port 80 should be available!
 
 </br>
 
@@ -371,7 +372,7 @@ cat ~/.ssh/git/id_ed25519.pub
 ```
 
 > [!IMPORTANT]
-> New SSH key entry in GitHub account settings with created public key from server is needed!
+> New SSH key entry in GitHub account settings with created public key from server is required!
 
 Configuration of GitHub username and email on server (same as on GitHub):
 
@@ -416,7 +417,7 @@ Hi <username>! You've successfully authenticated, but GitHub does not provide sh
 Cloning of this repository from GitHub:
 
 ```
-git clone git@github.com:mikemeyer186/vm-cloud-config.git
+git clone git@github.com:mikemeyer186/v-server-setup.git
 ```
 
 Output, if everything works 👍🏻:
